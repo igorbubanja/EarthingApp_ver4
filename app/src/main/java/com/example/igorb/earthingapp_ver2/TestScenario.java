@@ -16,14 +16,14 @@ public class TestScenario extends MainActivity implements Serializable {
 
     /*These field are declared as transient as they are not serializable, so will crash the app when
      * I try to serialize instances of this class. This is a hacky solution -  use a better method at some point
-     * e.g. a function that returns the double values, then just serialize those */
+     * e.g. a function that returns the double values, then just pass those values */
     transient EditText distanceInput;
     transient EditText resistanceInput;
     transient TextView answerOutput;
 
-    double distance;
-    double resistance;
-    double answer;
+    double distance = -1;
+    double resistance = -1;
+    double answer = -1;
 
     double calcFunction(double a, double b){
         return a + b;
@@ -43,6 +43,11 @@ public class TestScenario extends MainActivity implements Serializable {
             distance = distanceDouble;
             resistance = resistanceDouble;
             answer = answerDouble;
+        }
+        else{
+            distance = -1;
+            resistance = -1;
+            answer = -1;
         }
     }
 

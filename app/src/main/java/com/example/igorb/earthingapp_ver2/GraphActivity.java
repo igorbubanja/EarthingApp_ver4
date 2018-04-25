@@ -30,9 +30,10 @@ public class GraphActivity extends AppCompatActivity {
         }
 
         for (TestScenario test: testList){
-           Entry myEntry = new Entry((float)test.resistance, (float)test.distance);
-           entries.add(myEntry);
-           Log.i("test data", "resistance: " + test.resistance + "distance " + test.distance);
+            if(test.resistance >=0 && test.distance >= 0 ) {
+                Entry myEntry = new Entry((float) test.resistance, (float) test.distance);
+                entries.add(myEntry);
+            }
         }
 
         LineDataSet dataSet = new LineDataSet(entries, "Label");
