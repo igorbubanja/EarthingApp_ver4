@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -24,9 +26,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //Dynamically setting up the UI
-        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linearLayout1);
-        int count = 1;
-        TableLayout inputTable = tableLayout(count);
+        ScrollView linearLayout = (ScrollView) findViewById(R.id.linearLayout1);
+        TableLayout inputTable = tableLayout(1);
         inputTable.setId(R.id.mainInputTable); //mainInputTable is defined as an id in ids.xml in the res folder
         linearLayout.addView(inputTable);
     }
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         Log.i("main", "dist: " + id1 + ", res: " + id2 + ", ans: " + id3);
         TestScenario newTest = new TestScenario(distInput, resInput, answer);
         testList.add(newTest);
+
         return tableRow;
     }
 
@@ -89,6 +91,17 @@ public class MainActivity extends AppCompatActivity {
     public void addRowButton(View view){
         TableLayout inputTable = (TableLayout) findViewById(R.id.mainInputTable);
         inputTable.addView(createOneFullRow());
+
+        //automatically scrolls to the bottom as new rows are added beyond the screen
+        final ScrollView linearLayout = (ScrollView) findViewById(R.id.linearLayout1);
+
+        linearLayout.postDelayed(new Runnable() {
+            public void run() {
+                linearLayout.fullScroll(View.FOCUS_DOWN);
+            }
+
+        }, 100L); //postDelayed is used instead of post, as sometimes the view isn't updates quickly enough and so the scroll view misses out the last entry.
+
     }
 
 
