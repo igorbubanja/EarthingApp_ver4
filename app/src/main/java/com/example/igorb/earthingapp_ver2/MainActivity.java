@@ -1,6 +1,7 @@
 //version 4
 package com.example.igorb.earthingapp_ver2;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
@@ -32,6 +33,14 @@ public class MainActivity extends AppCompatActivity {
         linearLayout.addView(inputTable);
     }
 
+    public void showGraph(View view){
+        Intent showGraph = new Intent(this, GraphActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("testScenarios", testList);
+        showGraph.putExtras(bundle);
+        startActivity(showGraph);
+    }
+
     public void calcLoop(View view){
         //calculate for all inputs
         for(TestScenario test: testList){
@@ -56,14 +65,13 @@ public class MainActivity extends AppCompatActivity {
         int id3 = nextId + 2;
         EditText distInput = editText(id1, "Distance");
         EditText resInput = editText(id2, "Resistance");
-        TextView answer = textView(3);
+        TextView answer = textView(id3);
         nextId += 3;
 
         tableRow.addView(distInput);
         tableRow.addView(resInput);
         tableRow.addView(answer);
 
-        Log.i("main", "dist: " + id1 + ", res: " + id2 + ", ans: " + id3);
         TestScenario newTest = new TestScenario(distInput, resInput, answer);
         testList.add(newTest);
 

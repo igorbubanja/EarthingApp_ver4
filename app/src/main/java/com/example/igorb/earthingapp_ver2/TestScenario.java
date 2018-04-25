@@ -6,14 +6,24 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.Serializable;
+
 /**
  * Created by IgorB on 22/04/2018.
  */
 
-public class TestScenario extends MainActivity {
-    EditText distanceInput;
-    EditText resistanceInput;
-    TextView answerOutput;
+public class TestScenario extends MainActivity implements Serializable {
+
+    /*These field are declared as transient as they are not serializable, so will crash the app when
+     * I try to serialize instances of this class. This is a hacky solution -  use a better method at some point
+     * e.g. a function that returns the double values, then just serialize those */
+    transient EditText distanceInput;
+    transient EditText resistanceInput;
+    transient TextView answerOutput;
+
+    double distance;
+    double resistance;
+    double answer;
 
     double calcFunction(double a, double b){
         return a + b;
@@ -29,8 +39,13 @@ public class TestScenario extends MainActivity {
 
             Double answerDouble = calcFunction(distanceDouble, resistanceDouble);
             answerOutput.setText(Double.toString(answerDouble));
+
+            distance = distanceDouble;
+            resistance = resistanceDouble;
+            answer = answerDouble;
         }
     }
+
 
     public TestScenario( EditText distInput, EditText resInput,  TextView ansText){
 
@@ -39,3 +54,4 @@ public class TestScenario extends MainActivity {
         answerOutput = ansText;
     }
 }
+
