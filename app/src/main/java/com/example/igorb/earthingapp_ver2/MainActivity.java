@@ -1,3 +1,4 @@
+//version 4
 package com.example.igorb.earthingapp_ver2;
 
 import android.support.v7.app.AppCompatActivity;

@@ -26,7 +26,7 @@ public class TestScenario extends MainActivity {
         if(distString.length() != 0 && resString.length() != 0){
             Double distanceDouble = Double.parseDouble(distString);
             Double resistanceDouble = Double.parseDouble(resString);
-    
+
             Double answerDouble = calcFunction(distanceDouble, resistanceDouble);
             answerOutput.setText(Double.toString(answerDouble));
         }
