@@ -20,17 +20,17 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     ArrayList<TestScenario> testList = new ArrayList<>();
-    int nextId = 100;
+    int testNumber = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         //Dynamically setting up the UI
-        ScrollView linearLayout = (ScrollView) findViewById(R.id.linearLayout1);
-        TableLayout inputTable = tableLayout(1);
+        ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView1);
+        TableLayout inputTable = tableLayout(0);
         inputTable.setId(R.id.mainInputTable); //mainInputTable is defined as an id in ids.xml in the res folder
-        linearLayout.addView(inputTable);
+        scrollView.addView(inputTable);
     }
 
     public void showGraph(View view){
@@ -58,23 +58,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private TableRow createOneFullRow() {
+        testNumber++;
         TableRow tableRow = new TableRow(this);
         tableRow.setPadding(0, 10, 0, 0);
-        int id1 = nextId;
-        int id2 = nextId + 1;
-        int id3 = nextId + 2;
-        EditText distInput = editText(id1, "Distance");
-        EditText resInput = editText(id2, "Resistance");
-        TextView answer = textView(id3);
-        nextId += 3;
-
+        TextView testNumberView = textView(0, 0.2f);
+        testNumberView.setText(Integer.toString(testNumber));
+        EditText distInput = editText(1, "Distance");
+        EditText resInput = editText(2, "Resistance");
+        TextView answer = textView(3, 1f);
+        tableRow.addView(testNumberView);
         tableRow.addView(distInput);
         tableRow.addView(resInput);
         tableRow.addView(answer);
 
         TestScenario newTest = new TestScenario(distInput, resInput, answer);
         testList.add(newTest);
-
         return tableRow;
     }
 
@@ -88,9 +86,9 @@ public class MainActivity extends AppCompatActivity {
         return editText;
     }
 
-    private TextView textView(int id) {
+    private TextView textView(int id, float weight) {
         TextView textView = new TextView(this);
-        TableRow.LayoutParams lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f);
+        TableRow.LayoutParams lp = new TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, weight);
         textView.setLayoutParams(lp);
         textView.setId(id);
         return textView;
@@ -98,19 +96,24 @@ public class MainActivity extends AppCompatActivity {
 
     public void addRowButton(View view){
         TableLayout inputTable = (TableLayout) findViewById(R.id.mainInputTable);
-        inputTable.addView(createOneFullRow());
+        TableRow tableRowToAdd = createOneFullRow();
+        inputTable.addView(tableRowToAdd);
 
+        /*
         //automatically scrolls to the bottom as new rows are added beyond the screen
-        final ScrollView linearLayout = (ScrollView) findViewById(R.id.linearLayout1);
-
-        linearLayout.postDelayed(new Runnable() {
+        final ScrollView scrollView = (ScrollView) findViewById(R.id.scrollView1);
+        scrollView.postDelayed(new Runnable() {
             public void run() {
-                linearLayout.fullScroll(View.FOCUS_DOWN);
+                scrollView.fullScroll(View.FOCUS_DOWN);
             }
 
         }, 100L); //postDelayed is used instead of post, as sometimes the view isn't updates quickly enough and so the scroll view misses out the last entry.
+        */
+
+        //Force the focus onto the new row
+        EditText lastEditText = (EditText) tableRowToAdd.getChildAt(1);
+        lastEditText.requestFocus();
 
     }
-
 
 }

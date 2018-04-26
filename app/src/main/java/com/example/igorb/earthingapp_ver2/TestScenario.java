@@ -48,6 +48,7 @@ public class TestScenario extends MainActivity implements Serializable {
             distance = -1;
             resistance = -1;
             answer = -1;
+            answerOutput.setText("");
         }
     }
 

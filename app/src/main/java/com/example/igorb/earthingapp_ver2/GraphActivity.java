@@ -8,8 +8,10 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.utils.EntryXComparator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class GraphActivity extends AppCompatActivity {
@@ -35,11 +37,14 @@ public class GraphActivity extends AppCompatActivity {
                 entries.add(myEntry);
             }
         }
+        Collections.sort(entries, new EntryXComparator()); //entries musst be sorted by their x value for the graph to work properly
 
-        LineDataSet dataSet = new LineDataSet(entries, "Label");
+        if(entries.size()>0) {
+            LineDataSet dataSet = new LineDataSet(entries, "Label");
+            LineData lineData = new LineData(dataSet);
+            chart.setData(lineData);
+        }
 
-        LineData lineData = new LineData(dataSet);
-        chart.setData(lineData);
         chart.invalidate();
 
     }
