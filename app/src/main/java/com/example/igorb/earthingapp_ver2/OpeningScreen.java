@@ -17,4 +17,9 @@ public class OpeningScreen extends AppCompatActivity {
         Intent newTest = new Intent(this, MainActivity.class);
         startActivity(newTest);
     }
+
+    public void loadTest(View view){
+        Intent load = new Intent(this, LoadTest.class);
+        startActivity(load);
+    }
 }

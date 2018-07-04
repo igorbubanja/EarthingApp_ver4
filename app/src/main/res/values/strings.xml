@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">EarthingApp_ver2</string>
+    <string name="title_activity_load_test">LoadTest</string>
 </resources>

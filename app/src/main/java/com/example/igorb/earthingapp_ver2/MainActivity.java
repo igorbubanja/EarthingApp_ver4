@@ -1,11 +1,17 @@
 //version 4
 package com.example.igorb.earthingapp_ver2;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.EditText;
@@ -14,6 +20,7 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -21,6 +28,29 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<TestScenario> testList = new ArrayList<>();
     int testNumber = 0;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.main_menu, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        super.onOptionsItemSelected(item);
+
+        switch(item.getItemId()){
+            case R.id.save:
+                //call save function here
+                    save();
+                return true;
+            default:
+                return false;
+            }
+        }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,6 +144,21 @@ public class MainActivity extends AppCompatActivity {
         EditText lastEditText = (EditText) tableRowToAdd.getChildAt(1);
         lastEditText.requestFocus();
 
+    }
+
+    public void save(){
+        //TODO: create a database helper class
+        //Using SQLite
+        SQLiteDatabase myDataBase = this.openOrCreateDatabase("Results", MODE_PRIVATE, null);
+        myDataBase.execSQL("DROP TABLE Results"); //only use this during testing
+        myDataBase.execSQL("CREATE TABLE IF NOT EXISTS Results(distance REAL(3), resistance REAL(3), resistivity REAL(3))");
+        //myDataBase.execSQL("INSERT INTO Results (distance, resistance, resistivity) VALUES (" + testList.get(0).distance + ", 1, 1)");
+        for(TestScenario test:testList){
+            myDataBase.execSQL("INSERT INTO Results (distance, resistance, resistivity) VALUES (" +
+                    test.distance + "," +  test.resistance + "," + test.answer + ")");
+        }
+
+        //Toast.makeText(this, myDataBase.getPath(), Toast.LENGTH_LONG).show();
     }
 
 }
